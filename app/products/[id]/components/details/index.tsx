@@ -29,7 +29,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-4 p-2 md:p-4">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-10 xl:gap-17 p-2 md:p-4">
         {/* ----------------------------------------- Image side Product -----------------------------------------  */}
         <div className="w-full lg:w-1/2 rounded-lg">
           <div className="relative w-full h-[350px] lg:h-[500px] bg-gray-100">
