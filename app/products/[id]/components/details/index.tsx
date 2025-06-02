@@ -1,16 +1,38 @@
-import { Star } from "lucide-react";
+import { SlashIcon, Star } from "lucide-react";
 import Image from "next/image";
 import styles from "./styles.module.scss";
 import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const ProductDetails = () => {
   return (
-    <div className="container mx-auto">
-      <h2>All Category / Coffee-Pack</h2>
-      <div className="flex flex-col md:flex-row gap-4 p-4">
-        {/* ---------------------------- Image side Product ----------------------------  */}
-        <div className="p-6 rounded-lg w-full md:w-1/2">
-          <div className="relative w-full h-[500px] bg-gray-100">
+    <div className="container mx-auto px-1 md:px-0">
+      {/* --------------------------------------------- Breadcrumb ---------------------------------------------  */}
+      <div className="p-2 md:px-4 md:py-0" >
+        <div className="w-full">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <span>Products</span>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator>
+                <SlashIcon />
+              </BreadcrumbSeparator>
+              <span>Details</span>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-4 p-2 md:p-4">
+        {/* ----------------------------------------- Image side Product -----------------------------------------  */}
+        <div className="w-full lg:w-1/2 rounded-lg">
+          <div className="relative w-full h-[350px] lg:h-[500px] bg-gray-100">
             <Image
               src={"/images/products/t-1.png"}
               alt="Product Image"
@@ -20,15 +42,15 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* ---------------------------- Details side Product ----------------------------  */}
-        <div className="p-6 rounded-lg w-full md:w-1/2">
-          <h1 className="font-bold text-2xl">
+        {/* ---------------------------------------- Details side Product ----------------------------------------  */}
+        <div className="w-full lg:w-1/2">
+          <h1 className="font-bold text-xl lg:text-2xl">
             Cotton Classic Fit Poplin Weave Shirt,
             <br />
             White
           </h1>
 
-          <p className="mt-5">
+          <p className="mt-2 lg:mt-5 text-base/7">
             At Charles Tyrwhitt, their Classic Fit is roomy through the
             shoulders and chest for utmost comfort. Of course, its crafted from
             Charles Tyrwhitts favourite 100% cotton yarn woven into a poplin
@@ -43,7 +65,7 @@ const ProductDetails = () => {
             </span>
             <span className="text-gray-400 ml-1 text-xs">(15 Reviews)</span>
           </div>
-          <div className="font-black mt-5">
+          <div className="font-black mt-5 mb-6">
             <span className="inline-block text-4xl">29.</span>
             <span className="inline-block text-xl translate-y-[-14px]">
               12 $
@@ -51,7 +73,7 @@ const ProductDetails = () => {
           </div>
 
           <form>
-            <div className={styles["radio-group"]}>
+            <div className={`${styles["radio-group"]} mb-2`}>
               <label>
                 <input type="radio" name="color" />
                 <span>
@@ -118,6 +140,7 @@ const ProductDetails = () => {
                 </span>
               </label>
             </div>
+
             <Button type="button" className="w-full py-[24px] mt-10" size="lg">
               Add to Cart
             </Button>
