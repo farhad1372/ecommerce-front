@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 
 const ProductDetails = () => {
   return (
-    <>
+    <div className="container mx-auto">
+      <h2>All Category / Coffee-Pack</h2>
       <div className="flex flex-col md:flex-row gap-4 p-4">
         {/* ---------------------------- Image side Product ----------------------------  */}
         <div className="p-6 rounded-lg w-full md:w-1/2">
@@ -130,7 +131,7 @@ const ProductDetails = () => {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
