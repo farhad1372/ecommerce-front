@@ -1,21 +1,27 @@
 import { Star } from "lucide-react";
 import Image from "next/image";
+import styles from "./styles.module.scss";
+import { Button } from "@/components/ui/button";
 
 const ProductDetailsPage = () => {
   return (
-    <div className="container mx-auto mt-10">
+    <div className="container mx-auto mt-10" id="product-details-page">
       <h2>All Category / Coffee-Pack</h2>
       <div className="flex flex-col md:flex-row gap-4 p-4">
+        {/* ---------------------------- Image side Product ----------------------------  */}
         <div className="p-6 rounded-lg w-full md:w-1/2">
-          <div className="relative w-full h-[650px]">
-            <Image
+          <div className="relative w-full h-[500px]">
+            <Image 
+              
               src={"/images/products/t-1.png"}
               alt="Product Image"
               fill
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-contain border-1 rounded-lg"
             />
           </div>
         </div>
+
+        {/* ---------------------------- Details side Product ----------------------------  */}
         <div className="p-6 rounded-lg w-full md:w-1/2">
           <h1 className="font-bold text-2xl">
             Cotton Classic Fit Poplin Weave Shirt,
@@ -31,8 +37,8 @@ const ProductDetailsPage = () => {
             lightweight for warmer days, and feels exceptionally smooth against
             the skin, too.
           </p>
-          <div className="mt-5 text-sm">
-            <span className="font-semibold flex items-center ">
+          <div className="mt-5 text-sm flex items-center flex-wrap">
+            <span className="font-semibold flex items-center  ">
               <Star className="mr-1" color="#FFC107" fill="#FFC107" size={16} />
               4.5 Rating
             </span>
@@ -44,6 +50,79 @@ const ProductDetailsPage = () => {
               12 $
             </span>
           </div>
+
+          <form>
+            <div className={styles["radio-group"]}>
+              <label>
+                <input type="radio" name="color" />
+                <span>
+                  <span className="bg-[#85998B]"></span>
+                </span>
+              </label>
+
+              <label>
+                <input type="radio" name="color" />
+                <span>
+                  <span className="bg-[#ECC8B4]"></span>
+                </span>
+              </label>
+              <label>
+                <input type="radio" name="color" />
+                <span>
+                  <span className="bg-[#D5D6DA]"></span>
+                </span>
+              </label>
+            </div>
+
+            <div
+              className={`${styles["radio-group"]} ${styles["radio-group-2"]} `}
+            >
+              <label>
+                <input type="radio" name="size" />
+                <span>
+                  <span className=" flex content-center text-center font-semibold text-xs ">
+                    SM
+                  </span>
+                </span>
+              </label>
+
+              <label>
+                <input type="radio" name="size" />
+                <span>
+                  <span className="flex content-center text-center font-semibold text-xs ">
+                    LG
+                  </span>
+                </span>
+              </label>
+              <label>
+                <input type="radio" name="size" />
+                <span>
+                  <span className=" flex content-center text-center font-semibold text-xs ">
+                    XL
+                  </span>
+                </span>
+              </label>
+              <label>
+                <input type="radio" name="size" />
+                <span>
+                  <span className=" flex content-center text-center font-semibold text-xs ">
+                    2XL
+                  </span>
+                </span>
+              </label>
+              <label>
+                <input type="radio" name="size" />
+                <span>
+                  <span className=" flex content-center text-center font-semibold text-xs ">
+                    3XL
+                  </span>
+                </span>
+              </label>
+            </div>
+            <Button type="button" className="w-full py-[24px] mt-10" size="lg" >Add to Cart</Button>
+            <Button type="button" className="w-full mt-3 py-[24px] border-2 !bg-transparent text-primary shadow-none"  size="lg" >Buy this Item</Button>
+
+          </form>
         </div>
       </div>
     </div>
