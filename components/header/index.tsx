@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <>
       <header className="border-b py-3 md:py-4 lg:py-5">
-        <div className="container mx-auto">
+        <div className="container mx-auto px-1 md:px-4">
           <div className="flex items-center gap-10 ">
             <div className="hidden md:block">
               <h3 className="font-bold text-xl text-primary">
@@ -21,7 +21,7 @@ const Header = () => {
               </h3>
             </div>
             <NavigationMenu viewport={true} className="z-50">
-              <NavigationMenuList className="w-80 md:w-auto text-left flex justify-start">
+              <NavigationMenuList className=" text-left flex justify-start">
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
