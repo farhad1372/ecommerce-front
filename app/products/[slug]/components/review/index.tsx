@@ -1,23 +1,12 @@
 "use client";
 import AISummary from "@/components/AISummary";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Api } from "@/lib/axios";
@@ -25,11 +14,22 @@ import { Product } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Rater from "react-rater";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import "react-rater/lib/react-rater.css";
+import { toast, Toaster } from "sonner";
 
 interface ProductCardProps {
   product: Product;
 }
+
+type FormValues = {
+  full_name: string;
+  content: string;
+  rate: number;
+};
 
 const getAIReview = async (product_id: number, page = 1) => {
   try {
@@ -44,6 +44,7 @@ const getAIReview = async (product_id: number, page = 1) => {
 
 const ProductReview = ({ product }: ProductCardProps) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [rate, setRate] = useState(0);
 
   const { data, isLoading } = useQuery({
     queryKey: ["product-ai-review", product?.id, currentPage],
@@ -53,8 +54,30 @@ const ProductReview = ({ product }: ProductCardProps) => {
     refetchOnWindowFocus: false,
   });
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>();
+
+  const onSubmit = async (formData: FormValues) => {
+    try {
+      const { data } = await Api.post(
+        `/site/products/${product?.id}/reviews`,
+        formData
+      );
+      reset();
+      toast("Review has been sent.");
+      console.log("data", data);
+    } catch (e) {
+      console.log("e", e);
+    }
+  };
+
   return (
     <div className="container mx-auto border-t md:px-2 md:pt-6  lg:px-3 mt-7 pb-20">
+      <Toaster />
       <h3 className="font-semibold text-xl mb-2 mt-5 px-4 md:hidden ">
         Reviews
       </h3>
@@ -128,7 +151,7 @@ const ProductReview = ({ product }: ProductCardProps) => {
           </Pagination>
         </div>
 
-        {/* ------------------------------------------------- AI Reviews Summary Side  ------------------------------------------------- */}
+        {/* ------------------------------------------------- AI Reviews Summary Side + Add Review  ------------------------------------------------- */}
         <div className="p-2 lg:-6 w-full md:w-1/2 order-1 md:order-2">
           <Card>
             <CardHeader>
@@ -138,6 +161,87 @@ const ProductReview = ({ product }: ProductCardProps) => {
             </CardHeader>
             <CardContent>
               <AISummary section="reviews" product={product} />
+            </CardContent>
+          </Card>
+
+          <Card className="mt-3">
+            <CardHeader>
+              <CardTitle>Send Review</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form
+                onSubmit={handleSubmit((data) => onSubmit({ ...data, rate }))}
+                className="space-y-6"
+              >
+                <div>
+                  <label className="block mb-1 font-medium">Full Name</label>
+                  <Input
+                    {...register("full_name", {
+                      required: "Fill Name is required",
+                      minLength: {
+                        value: 3,
+                        message: "Full Name must be at least 3 characters",
+                      },
+                    })}
+                    placeholder="john Doe"
+                  />
+                  {errors.full_name && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.full_name.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block mb-1 font-medium">Comment</label>
+                  <Textarea
+                    rows={4}
+                    {...register("content", {
+                      required: "Content is Required",
+                      minLength: {
+                        value: 10,
+                        message: "Content must be at least 10 characters",
+                      },
+                    })}
+                    placeholder="Enter your comment"
+                  />
+                  {errors.content && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.content.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block mb-1 font-medium">Rate</label>
+                  <Rater
+                    total={5}
+                    rating={rate}
+                    interactive={true}
+                    onRate={({ rating }) => setRate(rating)}
+                  />
+                  {rate === 0 && (
+                    <p className="text-sm text-red-500 mt-1">
+                      Rate is Required
+                    </p>
+                  )}
+                </div>
+
+                <p>
+                  <b>Tip:</b>
+                  <br />
+                  Your Comment will be displayed after admin approval.
+                </p>
+
+                <Button
+                  size="lg"
+                  className="w-[200px]"
+                  type="submit"
+                  disabled={isSubmitting || rate === 0}
+                >
+                  {isSubmitting ? "Loading..." : "Send"}
+                </Button>
+              </form>
             </CardContent>
           </Card>
         </div>
