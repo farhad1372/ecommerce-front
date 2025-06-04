@@ -16,7 +16,7 @@ export default function ProductDetailsDescription({
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="min-h-[200px]"
+        className="min-h-[200px] mt-4"
       >
         <TabsList>
           <TabsTrigger value="description">Description</TabsTrigger>
