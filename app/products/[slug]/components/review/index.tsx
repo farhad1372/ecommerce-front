@@ -63,13 +63,9 @@ const ProductReview = ({ product }: ProductCardProps) => {
 
   const onSubmit = async (formData: FormValues) => {
     try {
-      const { data } = await Api.post(
-        `/site/products/${product?.id}/reviews`,
-        formData
-      );
+      await Api.post(`/site/products/${product?.id}/reviews`, formData);
       reset();
       toast("Review has been sent.");
-      console.log("data", data);
     } catch (e) {
       console.log("e", e);
     }

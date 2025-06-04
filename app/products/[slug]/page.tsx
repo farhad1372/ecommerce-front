@@ -18,7 +18,6 @@ export default async function ProductDetailsPage({ params }: ProductPageProps) {
 
   try {
     const { data } = await Api.get(`/site/products/${slug}`);
-    console.log("prod", data?.data);
     return (
       <div className="mt-2 md:mt-5 " id="product-details-page">
         <ProductDetails product={data?.data} />

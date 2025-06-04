@@ -9,7 +9,6 @@ interface ErrorProps {
 }
 
 export default function Error({ error, reset }: ErrorProps) {
-  console.log("--------", { error });
   return (
     <div className="p-4 text-center">
       {error?.message === "404" ? (
