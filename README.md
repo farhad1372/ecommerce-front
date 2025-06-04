@@ -22,7 +22,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - Form built using shadcn/ui + react-rater
 
 
-🧠 AI Integration
+## 🧠 AI Integration
 - Review Analyzer: Processes all approved reviews and summarizes user sentiment using OpenAI.
 - Product Summarizer: Summarizes key product information into a brief overview.
 
