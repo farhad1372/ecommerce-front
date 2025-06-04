@@ -1,12 +1,12 @@
-import Link from "next/link";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+// import Link from "next/link";
+// import {
+//   NavigationMenu,
+//   NavigationMenuContent,
+//   NavigationMenuItem,
+//   NavigationMenuLink,
+//   NavigationMenuList,
+//   NavigationMenuTrigger,
+// } from "@/components/ui/navigation-menu";
 // import SidebarPanel from "../sidebar";
 
 const Header = () => {
@@ -15,12 +15,12 @@ const Header = () => {
       <header className="border-b py-3 md:py-4 lg:py-5">
         <div className="container mx-auto px-1 md:px-4">
           <div className="flex items-center gap-10 ">
-            <div className="hidden md:block">
+            <div className="">
               <h3 className="font-bold text-xl text-primary">
                 E-Commerce Product
               </h3>
             </div>
-            <NavigationMenu viewport={true} className="z-50">
+            {/* <NavigationMenu viewport={true} className="z-50">
               <NavigationMenuList className=" text-left flex justify-start">
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
@@ -59,7 +59,7 @@ const Header = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
-            </NavigationMenu>
+            </NavigationMenu> */}
           </div>
         </div>
       </header>
@@ -68,24 +68,24 @@ const Header = () => {
   );
 };
 
-function ListItem({
-  title,
-  children,
-  href,
-  ...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
-  return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link href={href}>
-          <div className="text-sm leading-none font-medium">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-}
+// function ListItem({
+//   title,
+//   children,
+//   href,
+//   ...props
+// }: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
+//   return (
+//     <li {...props}>
+//       <NavigationMenuLink asChild>
+//         <Link href={href}>
+//           <div className="text-sm leading-none font-medium">{title}</div>
+//           <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+//             {children}
+//           </p>
+//         </Link>
+//       </NavigationMenuLink>
+//     </li>
+//   );
+// }
 
 export default Header;
