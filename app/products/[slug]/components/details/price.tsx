@@ -1,26 +1,28 @@
 "use client";
 import { getProductPrice, priceSeparator } from "@/helpers/price";
-import { Product } from "@/types/product";
+import { Attribute, Product } from "@/types/product";
 import styles from "./styles.module.scss";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function ProductDetailsPrice({ product }: { product: Product }) {
-  const [color, setColor] = useState<{ id: number; value: string }>();
-  const [size, setSize] = useState<{ id: number; value: string }>();
-  const [price , setPrice] = useState(0)
+  const [color, setColor] = useState<Attribute | undefined>();
+  const [size, setSize] = useState<Attribute | undefined>();
+  const [price, setPrice] = useState(product?.price || 0);
 
   useEffect(() => {
-    const first_color = product?.attributes?.find((a) => a.type === "color");
-    if (first_color) setColor(first_color);
+    const defaultColor =
+      product?.attributes?.find((a) => a.type === "color") ?? null;
+    if (defaultColor) setColor(defaultColor);
 
-    const first_size = product?.attributes?.find((a) => a.type === "size");
-    if (first_size) setSize(first_size);
+    const defaultSize =
+      product?.attributes?.find((a) => a.type === "size") ?? null;
+    if (defaultSize) setSize(defaultSize);
   }, [product]);
 
   useEffect(() => {
-    setPrice(getProductPrice(product, color?.id || 0, size?.id || 0))
-  }, [color, size]);
+    setPrice(getProductPrice(product, color?.id || 0, size?.id || 0));
+  }, [color, size, product]);
 
   return (
     <>
@@ -45,8 +47,8 @@ export default function ProductDetailsPrice({ product }: { product: Product }) {
                     name="color"
                     checked={color?.id === attr.id}
                   />
-                  <span >
-                    <span className={`bg-[${attr.value}]`}></span>
+                  <span>
+                    <span style={{ backgroundColor: attr.value }}></span>
                   </span>
                 </label>
               );
@@ -59,7 +61,7 @@ export default function ProductDetailsPrice({ product }: { product: Product }) {
             if (attr.type === "size") {
               return (
                 <label key={attr.id}>
-                  <input 
+                  <input
                     type="radio"
                     name="size"
                     checked={size?.id === attr.id}
