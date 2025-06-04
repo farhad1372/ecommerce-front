@@ -1,12 +1,63 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Star } from "lucide-react";
+"use client";
+import AISummary from "@/components/AISummary";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Api } from "@/lib/axios";
+import { Product } from "@/types/product";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import Rater from "react-rater";
+import "react-rater/lib/react-rater.css";
 
-const ProductReview = () => {
+interface ProductCardProps {
+  product: Product;
+}
+
+const getAIReview = async (product_id: number, page = 1) => {
+  try {
+    const { data } = await Api.get(
+      `/site/products/${product_id}/reviews?page=${page}`
+    );
+    return data;
+  } catch (e) {
+    console.log("E", e);
+  }
+};
+
+const ProductReview = ({ product }: ProductCardProps) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["product-ai-review", product?.id, currentPage],
+    queryFn: () => getAIReview(product?.id, currentPage),
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
   return (
-    <div className="container mx-auto border-t md:px-2 md:pt-6  lg:px-3 mt-7">
-      <h3 className="font-semibold text-xl mb-2 mt-5 px-4 md:hidden ">Reviews</h3>
+    <div className="container mx-auto border-t md:px-2 md:pt-6  lg:px-3 mt-7 pb-20">
+      <h3 className="font-semibold text-xl mb-2 mt-5 px-4 md:hidden ">
+        Reviews
+      </h3>
       <div className=" flex flex-col md:flex-row gap-4 lg:gap-10 xl:gap-17">
         {/* ------------------------------------------------- Reviews Side  ------------------------------------------------- */}
         <div className="p-2 lg:-6 w-full md:w-1/2 order-2 md:order-1">
@@ -15,89 +66,79 @@ const ProductReview = () => {
               Reviews
             </h3>
             <p className="text-gray-500 text-xs mb-5 hidden md:block">
-              Showing 5 from 255 reviews
+              Showing {data?.data?.data?.length || 0} from
+              {data?.data?.count || 0} reviews
             </p>
           </div>
 
-          <div className="flex gap-3  border-b pb-5 mb-7">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>.</AvatarFallback>
-            </Avatar>
-            <div>
-              <h5 className="font-semibold text-sm">Farhad Flhp</h5>
-              <div className="flex gap-[1px]">
-                <Star color="#FFC107" fill="#FFC107" size={12} />
-                <Star color="#FFC107" fill="#FFC107" size={12} />
-                <Star color="#FFC107" fill="#FFC107" size={12} />
-                <Star color="#ccc" fill="#ccc" size={12} />
-                <Star color="#ccc" fill="#ccc" size={12} />
+          {isLoading && (
+            <div className="flex flex-col space-y-3">
+              <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
               </div>
-              <p className="mt-1 lg:mt-3 text-sm">
-                Love this t-shirt! The fabric is super soft and the fit is
-                perfect.
-              </p>
             </div>
-          </div>
+          )}
 
-          <div className="flex gap-3  border-b pb-5">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>.</AvatarFallback>
-            </Avatar>
-            <div>
-              <h5 className="font-semibold text-sm">Farhad Flhp</h5>
-              <div className="flex gap-[1px]">
-                <Star color="#FFC107" fill="#FFC107" size={12} />
-                <Star color="#FFC107" fill="#FFC107" size={12} />
-                <Star color="#FFC107" fill="#FFC107" size={12} />
-                <Star color="#ccc" fill="#ccc" size={12} />
-                <Star color="#ccc" fill="#ccc" size={12} />
-              </div>
-              <p className="mt-1 lg:mt-3 text-sm">
-                Love this t-shirt! The fabric is super soft and the fit is
-                perfect.
-              </p>
-            </div>
-          </div>
+          {data?.data?.data?.map(
+            (d: {
+              content: string;
+              id: number;
+              full_name: string;
+              rate: number;
+            }) => {
+              return (
+                <>
+                  <div className="flex gap-3  border-b pb-5 mb-7" key={d?.id}>
+                    <Avatar>
+                      <AvatarImage
+                        src={`https://avatar.iran.liara.run/username?username=${d?.full_name}`}
+                      />
+                    </Avatar>
+                    <div>
+                      <h5 className="font-semibold text-sm">{d?.full_name}</h5>
+                      {/* FFC107 */}
+                      <Rater total={5} rating={d?.rate} />
+
+                      <p className="mt-1 lg:mt-3 text-sm">{d?.content}</p>
+                    </div>
+                  </div>
+                </>
+              );
+            }
+          )}
+
+          <Pagination>
+            <PaginationContent>
+              {Array.from(
+                { length: Math.ceil(data?.data?.count / 10) },
+                (_, i) => i + 1
+              ).map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    isActive={currentPage === page}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+            </PaginationContent>
+          </Pagination>
         </div>
 
-        {/* ------------------------------------------------- Reviews Summary Side  ------------------------------------------------- */}
+        {/* ------------------------------------------------- AI Reviews Summary Side  ------------------------------------------------- */}
         <div className="p-2 lg:-6 w-full md:w-1/2 order-1 md:order-2">
           <Card>
-            <div className="px-3 lg:px-5">
-              <div className="border-b pb-4 flex flex-wrap items-center justify-between ">
-                <h6 className="font-semibold text-2xl">4.9</h6>
-                <div className="flex gap-[6px]">
-                  <Star color="#FFC107" fill="#FFC107" size={22} />
-                  <Star color="#FFC107" fill="#FFC107" size={22} />
-                  <Star color="#FFC107" fill="#FFC107" size={22} />
-                  <Star color="#FFC107" fill="#FFC107" size={22} />
-                  <Star color="#FFC107" fill="#FFC107" size={22} />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-[10px] mb-2 mt-5">
-                <span>5</span>
-                <Progress title="ss" value={33} style={{ height: 12 }} />
-              </div>
-              <div className="flex items-center gap-[10px] mb-2">
-                <span>4</span>
-                <Progress title="ss" value={33} style={{ height: 12 }} />
-              </div>
-              <div className="flex items-center gap-[10px] mb-2">
-                <span>3</span>
-                <Progress title="ss" value={33} style={{ height: 12 }} />
-              </div>
-              <div className="flex items-center gap-[10px] mb-2">
-                <span>2</span>
-                <Progress title="ss" value={33} style={{ height: 12 }} />
-              </div>
-              <div className="flex items-center gap-[10px] mb-2">
-                <span>1</span>
-                <Progress title="ss" value={33} style={{ height: 12 }} />
-              </div>
-            </div>
+            <CardHeader>
+              <CardTitle className="pb-4 border-b">
+                AI Reviews Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AISummary section="reviews" product={product} />
+            </CardContent>
           </Card>
         </div>
       </div>
