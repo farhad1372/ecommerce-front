@@ -26,6 +26,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - Review Analyzer: Processes all approved reviews and summarizes user sentiment using OpenAI.
 - Product Summarizer: Summarizes key product information into a brief overview.
 
+## ENV
+Create .ENV file in root dir, and set NEXT_PUBLIC_BASE_URL.
+NEXT_PUBLIC_BASE_URL="http://localhost:9582/api"
+
 ## Getting Started
 
 First, run the development server:
