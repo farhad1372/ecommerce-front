@@ -3,6 +3,7 @@ import ProductDetails from "./components/details";
 import ProductReview from "./components/review";
 import { Api } from "@/lib/axios";
 import { Product } from "@/types/product";
+import QueryProvider from "@/components/queryProvider";
 
 interface ProductPageProps {
   product: Product | null;
@@ -21,7 +22,9 @@ export default async function ProductDetailsPage({ params }: ProductPageProps) {
     return (
       <div className="mt-2 md:mt-5 " id="product-details-page">
         <ProductDetails product={data?.data} />
-        <ProductReview />
+        <QueryProvider>
+          <ProductReview product={data?.data} />
+        </QueryProvider>
       </div>
     );
   } catch (err) {
