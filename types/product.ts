@@ -5,7 +5,7 @@
     price: number;
     description: string;
     slug: string;
-    main_image: string | null;
+    main_image: string;
     images: string[] | null;
     rate_count: number;
     rate_value: number;
