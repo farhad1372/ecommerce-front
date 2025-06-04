@@ -10,14 +10,14 @@ interface ProductPageProps {
 }
 
 interface ProductPageProps {
-  params: { slug: string };
+  params: { id: string };
 }
 
 export default async function ProductDetailsPage({ params }: ProductPageProps) {
-  const { slug } = params;
+  const { id } = params;
 
   try {
-    const { data } = await Api.get(`/site/products/${slug}`);
+    const { data } = await Api.get(`/site/products/${id}`);
     return (
       <div className="mt-2 md:mt-5 " id="product-details-page">
         <ProductDetails product={data?.data} />
