@@ -1,7 +1,6 @@
-import { SlashIcon, Star } from "lucide-react";
+import { SlashIcon } from "lucide-react";
 import Image from "next/image";
 
-import { RoundRate } from "@/helpers/round";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,6 +9,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Product } from "@/types/product";
 import ProductDetailsPrice from "./price";
+import QueryProvider from "@/components/queryProvider";
+import ProductDetailsDescription from "./description";
 
 interface ProductCardProps {
   product: Product;
@@ -52,18 +53,10 @@ export default function ProductDetails({ product }: ProductCardProps) {
         <div className="w-full lg:w-1/2">
           <h1 className="font-bold text-xl lg:text-2xl">{product?.name}</h1>
 
-          <p className="mt-2 lg:mt-5 text-base/7">{product?.description}</p>
-          <div className="mt-5 text-sm flex items-center flex-wrap">
-            <span className="font-semibold flex items-center  ">
-              <Star className="mr-1" color="#FFC107" fill="#FFC107" size={16} />
-              {RoundRate(product?.rate_value)} Rating
-            </span>
-            <span className="text-gray-400 ml-1 text-xs">
-              ({product?.rate_count} Reviews)
-            </span>
-          </div>
-
-          <ProductDetailsPrice product={product} />
+          <QueryProvider>
+            <ProductDetailsDescription product={product} />
+            <ProductDetailsPrice product={product} />
+          </QueryProvider>
         </div>
       </div>
     </div>
