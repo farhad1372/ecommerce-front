@@ -3,8 +3,8 @@ import { QueryClient } from '@tanstack/react-query';
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: 1, // Retry failed requests once
-            staleTime: 1 * 60 * 1000, // Data stays fresh for 1 minutes
+            staleTime: 5 * 60 * 1000, // داده‌ها تا ۵ دقیقه تازه حساب می‌شن
+            refetchOnWindowFocus: false,
         },
     },
 });
