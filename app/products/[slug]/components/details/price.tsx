@@ -4,6 +4,8 @@ import { Attribute, Product } from "@/types/product";
 import styles from "./styles.module.scss";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { RoundRate } from "@/helpers/round";
+import { Star } from "lucide-react";
 
 export default function ProductDetailsPrice({ product }: { product: Product }) {
   const [color, setColor] = useState<Attribute | undefined>();
@@ -26,6 +28,15 @@ export default function ProductDetailsPrice({ product }: { product: Product }) {
 
   return (
     <>
+      <div className="mt-5 text-sm flex items-center flex-wrap">
+        <span className="font-semibold flex items-center  ">
+          <Star className="mr-1" color="#FFC107" fill="#FFC107" size={16} />
+          {RoundRate(product?.rate_value)} Rating
+        </span>
+        <span className="text-gray-400 ml-1 text-xs">
+          ({product?.rate_count} Reviews)
+        </span>
+      </div>
       <div className="font-black mt-5 mb-6">
         <span className="inline-block text-4xl">
           {priceSeparator(price)?.[0]}.
