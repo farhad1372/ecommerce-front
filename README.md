@@ -1,5 +1,31 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+## 🚀 Tech Stack
+
+- **React** (with TypeScript)
+- **TailwindCSS** – for responsive and modern UI styling
+- **SASS** – for modular component-based styling
+- **shadcn/ui** – prebuilt, accessible UI components
+- **@tanstack/react-query** – for API data fetching, caching, and query management
+- **OpenAI API** – for summarizing and analyzing user reviews and product details
+
+## ✨ Features
+- Dynamic product detail page
+- Attribute-based price update (color & size)
+- Review submission with name, rating (1–5), and comment
+- Live review section with pagination
+- Intelligent review analysis using OpenAI
+- Product summary generation using OpenAI
+- Tabs with client-side fetching and caching using React Query
+- Loading indicators and error handling
+- Form built using shadcn/ui + react-rater
+
+
+🧠 AI Integration
+- Review Analyzer: Processes all approved reviews and summarizes user sentiment using OpenAI.
+- Product Summarizer: Summarizes key product information into a brief overview.
+
 ## Getting Started
 
 First, run the development server:
@@ -16,21 +42,4 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
